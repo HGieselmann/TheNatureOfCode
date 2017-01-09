@@ -1,3 +1,7 @@
+// Diferent variants of a random Walk in Processing
+// Everything inspired by Daniel Shiffmans wonderful "The Natur of Code"
+// Henrik Gieselmann
+
 SimpleWalker simplewalker;
 SimpleWalker gridwalker;
 Walker walker;
