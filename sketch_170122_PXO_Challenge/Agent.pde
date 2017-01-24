@@ -1,7 +1,7 @@
 class Agent {
   //Setup Values to use.
-  int x,y,xo,yo,tx,ty;
-  float speedx, speedy;
+  int x,y,tx,ty,xa,ya;
+  float speedx, speedy,t;
   boolean collision;
   color line;
   long r;
@@ -14,6 +14,7 @@ class Agent {
     speedy = 1;
     collision = false;
     r = 0;
+    t=1;
   }
   
   void display() {
@@ -24,23 +25,28 @@ class Agent {
   }
   
   boolean collisiondetect () {
-   xo = x;
-   yo = y;
+   xa = x + int(speedx);
+   ya = y + int(speedy);
    borders.loadPixels();
-   color c = borders.get(x,y);
+   color c = borders.get(xa,ya);
    println(c);
-   if (c < -200) {
-     x = xo;
-     y = yo;
-     speedx *=-1*random(1);
-     speedy *=-1*random(1);
-     collision = true;
-   } else {
-     collision = false;
+   while (c < -200) {
+     if (c < -200){
+       t += .5;
+       speedx = map(noise(t),0,.94,-3,3);
+       speedy = map(noise(t+200),0,.94,-3,3);
+       println(speedx);
+       println(speedy);
+       xa = x + int(speedx);
+       ya = y + int(speedy);
+       c = borders.get(xa,ya);
+     } else {
+       x += speedx;
+       y += speedy;
+     }
+       
    }
-   
-   
-   return collision;
+       return collision;
   }
   
   void move() {
