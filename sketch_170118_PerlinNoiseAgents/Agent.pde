@@ -10,8 +10,8 @@ class Agent {
    size = tempSize;
    c = tempC;
    timestep = tempTime;
-   x = random(0,width);
-   y = random(0,height);
+   x = (tempXoff)*(width/2);
+   y = (tempYoff)*(height/2);
    xold = x;
    yold = y;
    xoff = tempXoff;
@@ -22,12 +22,13 @@ class Agent {
   xold = x;
   yold = y;
   x += map(noise(t + xoff),0,0.94,-5,5);
-  y += map(noise(t+yoff),0,0.94,-5,5);
+  y += map(noise(t + yoff),0,0.94,-5,5);
   t += timestep;
   return xold;
  }
  
  void display() {
+  strokeWeight(size);
   stroke(c);
   fill(c);
   //ellipseMode(CENTER);
