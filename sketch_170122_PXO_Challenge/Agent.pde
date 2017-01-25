@@ -1,68 +1,61 @@
 class Agent {
   //Setup Values to use.
   int x,y,tx,ty,xa,ya;
-  float speedx, speedy,t;
+  float dirx, diry,t, speed,hue;
   boolean collision;
   color line;
   long r;
+  PVector location;
+  PVector direction;
+  PVector acc;
   
   //Constructor
   Agent (int tempX, int tempY) {
     x = tempX;
     y = tempY;
-    speedx = 1;
-    speedy = 1;
+    dirx = 1;
+    diry = 1;
+    speed = 2;
     collision = false;
     r = 0;
-    t=1;
-  }
-  
-  void display() {
-    colorMode(HSB);
-    stroke(0,255,255);
-    strokeWeight(2);
-    point (x,y);
+    location = new PVector(tempX, tempY);
+    direction = new PVector(1,1);
+    hue = 0;
   }
   
   boolean collisiondetect () {
-   xa = x + int(speedx);
-   ya = y + int(speedy);
+   xa = int(location.x + direction.x);
+   ya = int(location.y + direction.y);
    borders.loadPixels();
    color c = borders.get(xa,ya);
-   println(c);
-   while (c < -200) {
-     if (c < -200){
-       t += .5;
-       speedx = map(noise(t),0,.94,-3,3);
-       speedy = map(noise(t+200),0,.94,-3,3);
-       println(speedx);
-       println(speedy);
-       xa = x + int(speedx);
-       ya = y + int(speedy);
-       c = borders.get(xa,ya);
-     } else {
-       x += speedx;
-       y += speedy;
-     }
-       
+   if (c < -1) {
+     collision = true;
+   } else {
+     collision = false;
    }
-       return collision;
+   return collision;
   }
   
   void move() {
-    x += speedx;
-    y += speedy;
+    x += dirx * speed;
+    y += diry * speed;
+    println("Moved!");
   }
   
   void turn() {
-    borders.loadPixels();
-    speedx *= -1 + ( map(random(1),1,0.94,-.5,.5));
-    speedy *= -1 + ( map(random(1),1,0.94,-.5,.5));
-    speedx = constrain(speedx, -2,2);
-    speedy = constrain(speedy, -2,2);
-    
-    
-    
+    t += 0.3;
+    //dirx = constrain(1/map(noise(t),0,1,-1,1),-1,1);
+    //diry = constrain(1/map(noise(t+t),0,1,-1,1),-1,1);
+    direction.x = random(-1,1);
+    direction.y = random(-1,1);
+  } 
+  
+  void display() {
+    colorMode(HSB);
+    hue = hue +.1;
+    stroke(hue,255,255);
+    strokeWeight(2);
+    point (x,y);
   }
     
     
